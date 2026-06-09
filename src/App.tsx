@@ -1507,6 +1507,12 @@ export default function App() {
   const hasAutoSelectedRef = useRef<boolean>(false);
   const [hasScrolledToMap, setHasScrolledToMap] = useState<boolean>(false);
 
+  // Active navigation tab indicators
+  const isGlavnayaActive = activePage === "main";
+  const isNashiClubyActive = false;
+  const isNovostiActive = false;
+  const isRulesActive = activePage === "faq";
+
   useEffect(() => {
     if (currentSection === 1) {
       setHasScrolledToMap(true);
@@ -2547,12 +2553,6 @@ export default function App() {
 
   // Smooth scroll handler targeting elements naturally and setting correct state indicators
   const scrollToSectionStr = (id: string, index: number) => {
-    if (id === "map-section") {
-      setActivePage("map");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      setCurrentSection(1);
-      return;
-    }
     if (activePage !== "main") {
       setActivePage("main");
       setTimeout(() => {
@@ -2680,7 +2680,7 @@ export default function App() {
             <button
               onClick={() => scrollToSectionStr("hero-section", 0)}
               className={`px-4 py-2 text-[9.5px] font-black uppercase tracking-widest rounded-full transition-all duration-200 cursor-pointer ${
-                activePage === "main"
+                isGlavnayaActive
                   ? "bg-[#e40011] text-white"
                   : "text-white/50 hover:text-white"
               }`}
@@ -2688,12 +2688,9 @@ export default function App() {
               Главная
             </button>
             <button
-              onClick={() => {
-                setActivePage("map");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
+              onClick={() => scrollToSectionStr("map-section", 1)}
               className={`px-4 py-2 text-[9.5px] font-black uppercase tracking-widest rounded-full transition-all duration-200 cursor-pointer ${
-                activePage === "map"
+                isNashiClubyActive
                   ? "bg-[#e40011] text-white"
                   : "text-white/50 hover:text-white"
               }`}
@@ -2703,7 +2700,7 @@ export default function App() {
             <button
               onClick={() => scrollToSectionStr("news-section", 3)}
               className={`px-4 py-2 text-[9.5px] font-black uppercase tracking-widest rounded-full transition-all duration-200 cursor-pointer ${
-                activePage === "main" && currentSection === 3
+                isNovostiActive
                   ? "bg-[#e40011] text-white"
                   : "text-white/50 hover:text-white"
               }`}
@@ -2716,7 +2713,7 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               className={`px-4 py-2 text-[9.5px] font-black uppercase tracking-widest rounded-full transition-all duration-200 cursor-pointer ${
-                activePage === "faq"
+                isRulesActive
                   ? "bg-[#e40011] text-white"
                   : "text-white/50 hover:text-white"
               }`}
@@ -3001,10 +2998,7 @@ export default function App() {
                     </li>
                     <li>
                       <button
-                        onClick={() => {
-                          setActivePage("map");
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
+                        onClick={() => scrollToSectionStr("map-section", 1)}
                         className="hover:text-white transition-colors duration-200 cursor-pointer focus:outline-none text-left"
                       >
                         Наши клубы
@@ -6024,10 +6018,7 @@ export default function App() {
                     </li>
                     <li>
                       <button
-                        onClick={() => {
-                          setActivePage("map");
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
+                        onClick={() => scrollToSectionStr("map-section", 1)}
                         className="hover:text-white transition-colors duration-200 cursor-pointer focus:outline-none text-left"
                       >
                         Наши клубы
