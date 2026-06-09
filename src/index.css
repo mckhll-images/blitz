@@ -1,0 +1,221 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&subset=cyrillic,cyrillic-ext&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, ui-sans-serif, system-ui;
+  --font-display:
+    "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif, ui-sans-serif, system-ui;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-brand-red: #e40011;
+}
+
+@keyframes slide-infinite-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes slide-infinite-down {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(40px, -60px) scale(1.15) rotate(120deg);
+  }
+  66% {
+    transform: translate(-30px, 40px) scale(0.9) rotate(240deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1) rotate(360deg);
+  }
+}
+
+@keyframes drift-reverse {
+  0% {
+    transform: translate(0px, 0px) scale(1.1) rotate(360deg);
+  }
+  50% {
+    transform: translate(-50px, 30px) scale(0.85) rotate(180deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1.1) rotate(0deg);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.3333%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 35s) linear infinite;
+}
+
+.animate-slide-up {
+  animation: slide-infinite-up var(--duration, 20s) linear infinite;
+}
+
+.animate-slide-down {
+  animation: slide-infinite-down var(--duration, 20s) linear infinite;
+}
+
+.animate-drift-slow {
+  animation: drift 25s infinite ease-in-out;
+}
+
+.animate-drift-reverse-slow {
+  animation: drift-reverse 30s infinite ease-in-out;
+}
+
+/* Liquid Glass (Liquid Glassmorphism) Design Pattern simplified to Elegant Minimalism */
+.liquid-glass {
+  background: rgba(13, 13, 16, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.liquid-glass-card {
+  background: rgba(18, 18, 22, 0.98);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+.liquid-glass-red-glow {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Special Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(228, 0, 17, 0.6);
+}
+
+/* Custom Scrollbar Hiding utility class */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Swiss typography helpers */
+.swiss-header {
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+/* Thin premium scrollbars for horizontal list components */
+.scrollbar-premium-horizontal {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+.scrollbar-premium-horizontal::-webkit-scrollbar {
+  height: 4px; /* very thin */
+}
+.scrollbar-premium-horizontal::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 99px;
+}
+.scrollbar-premium-horizontal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+  border: 1px solid transparent;
+  transition: background-color 0.3s;
+}
+.scrollbar-premium-horizontal::-webkit-scrollbar-thumb:hover {
+  background: rgba(228, 0, 17, 0.65); /* Brand Red */
+}
+.scrollbar-premium-horizontal-green::-webkit-scrollbar-thumb:hover {
+  background: rgba(36, 193, 133, 0.65); /* Region Green */
+}
+
+/* Enforce sleek modern sans, unbounded, and monospace font families inside the interactive workspace to eliminate Times New Roman fallbacks on Cyrillic elements */
+#glassmorphic-workspace,
+#glassmorphic-workspace button,
+#glassmorphic-workspace span,
+#glassmorphic-workspace p,
+#glassmorphic-workspace div,
+#glassmorphic-workspace h2,
+#glassmorphic-workspace h3,
+#glassmorphic-workspace h4 {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    system-ui;
+}
+
+#glassmorphic-workspace .font-sans {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    system-ui !important;
+}
+
+#glassmorphic-workspace .font-display {
+  font-family:
+    "Montserrat",
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    system-ui !important;
+}
+
+#glassmorphic-workspace .font-mono {
+  font-family:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, monospace !important;
+}
