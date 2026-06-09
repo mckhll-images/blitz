@@ -1,0 +1,8 @@
+{
+  "name": "FitnessBlitz",
+  "description": "Первая и крупнейшая сеть современных фитнес-клубов безлимитного формата в Казахстане с интерактивной картой.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
