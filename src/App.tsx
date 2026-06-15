@@ -1496,6 +1496,25 @@ const AnimatedGymCounter: React.FC<AnimatedGymCounterProps> = ({
 
 export default function App() {
   const [activePage, setActivePage] = useState<"main" | "faq" | "map">("main");
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [showMobileWarning, setShowMobileWarning] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        const isSessionDismissed = sessionStorage.getItem("mobile_warning_dismissed");
+        if (!isSessionDismissed) {
+          setShowMobileWarning(true);
+        }
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [hoveredBlock, setHoveredBlock] = useState<string | null>(null);
   const [clickCount, setClickCount] = useState<number>(0);
@@ -2659,13 +2678,13 @@ export default function App() {
             : "bg-transparent py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-6 sm:px-10">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-3.5 sm:px-10">
           {/* Left Brand Area */}
-          <div className="flex items-center select-none" id="brand-logo">
+          <div className="flex items-center select-none shrink-0" id="brand-logo">
             <img
               src="/logo.png"
               alt="FitnessBlitz Logo"
-              className="h-10 sm:h-11 w-auto object-contain"
+              className="h-7 xs:h-8 sm:h-10 w-auto object-contain"
             />
           </div>
 
@@ -2735,7 +2754,7 @@ export default function App() {
             initial={{ opacity: 0, x: 15 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex items-center gap-2 sm:gap-3"
+            className="flex items-center gap-1.5 sm:gap-3"
           >
             {/* White Premium Button Dropdown to select city from the beginning */}
             <div className="relative" id="header-city-dropdown-wrapper">
@@ -2743,7 +2762,7 @@ export default function App() {
                 onClick={() =>
                   setIsHeaderCitySelectOpen(!isHeaderCitySelectOpen)
                 }
-                className="bg-neutral-950/70 hover:bg-black backdrop-blur-md border border-white/10 hover:border-[#ff0a21]/55 text-white text-[10.5px] font-black uppercase tracking-widest px-5.5 py-3 rounded-full transition-all duration-300 active:scale-95 cursor-pointer hover:shadow-[0_0_20px_rgba(228,0,17,0.25)] flex items-center gap-2"
+                className="bg-neutral-950/70 hover:bg-black backdrop-blur-md border border-white/10 hover:border-[#ff0a21]/55 text-white text-[9px] sm:text-[10.5px] font-black uppercase tracking-widest px-3 py-2 sm:px-5.5 sm:py-3 rounded-full transition-all duration-300 active:scale-95 cursor-pointer hover:shadow-[0_0_20px_rgba(228,0,17,0.25)] flex items-center gap-1.5 sm:gap-2 leading-none"
                 id="get-started-cta"
               >
                 <span>
@@ -2810,7 +2829,7 @@ export default function App() {
             {/* "Купить абонемент" Header Button */}
             <button
               onClick={() => setIsBuyModalOpen(true)}
-              className="bg-[#e40011] hover:bg-[#b5000d] text-white text-[9px] sm:text-[10.5px] font-black uppercase tracking-widest px-3.5 sm:px-5.5 py-3 rounded-full transition-colors duration-200 cursor-pointer flex items-center justify-center font-sans"
+              className="bg-[#e40011] hover:bg-[#b5000d] text-white text-[9px] sm:text-[10.5px] font-black uppercase tracking-widest px-3 py-2 sm:px-5.5 sm:py-3 rounded-full transition-colors duration-200 cursor-pointer flex items-center justify-center font-sans leading-none"
               id="header-buy-membership-cta"
             >
               <span className="hidden sm:inline">Купить абонемент</span>
@@ -3210,12 +3229,12 @@ export default function App() {
 
             {/* Seamless Soft fading/blurring masks stretching across the entire width of the window */}
             <div className="absolute top-0 inset-x-0 h-36 bg-gradient-to-b from-black via-black/85 to-transparent z-25 pointer-events-none backdrop-blur-[0.5px]" />
-            <div className="absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-black via-black/85 to-transparent z-25 pointer-events-none backdrop-blur-[0.5px]" />
+            <div className="hidden md:block absolute bottom-0 inset-x-0 h-36 bg-gradient-to-t from-black via-black/85 to-transparent z-25 pointer-events-none backdrop-blur-[0.5px]" />
 
-            <div className="relative w-full h-full max-w-7xl mx-auto flex items-center z-10 px-6 sm:px-10">
+            <div className="relative w-full h-full max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-start z-20 md:z-10 px-6 sm:px-10 pt-18 md:pt-0 min-h-screen">
               {/* LEFT COLUMN: Main typographic content & Action triggers */}
               <motion.div
-                className="w-full md:w-[46%] lg:w-[42%] flex flex-col justify-center text-left py-20"
+                className="w-full md:w-[46%] lg:w-[42%] flex flex-col justify-start md:justify-center text-left pt-4 pb-4 md:py-20"
                 id="left-content-block"
                 initial={{ opacity: 0, x: -40 }}
                 animate={
@@ -3243,15 +3262,15 @@ export default function App() {
                       : { opacity: 0, y: -10 }
                   }
                   transition={{ duration: 0.8, delay: 0.2 }}
-                  className="flex items-center gap-2.5 mb-6 bg-[#cdd8e6]/5 border border-[#cdd8e6]/20 hover:border-[#cdd8e6]/40 px-3.5 py-1.5 rounded-full w-fit backdrop-blur-xl select-none transition-all duration-300 shadow-[0_2px_12px_rgba(205,216,230,0.05)]"
+                  className="flex items-center gap-1.5 md:gap-2.5 mb-3 md:mb-6 bg-[#cdd8e6]/5 border border-[#cdd8e6]/20 hover:border-[#cdd8e6]/40 px-2.5 py-1 md:px-3.5 md:py-1.5 rounded-full w-fit backdrop-blur-xl select-none transition-all duration-300 shadow-[0_2px_12px_rgba(205,216,230,0.05)]"
                 >
                   <img
                     src="https://disk.2gis.com/rubricator/thenomineesd5fc3fe077e03b4c544c55602eee949e.svg"
                     alt="2GIS Award nominee"
-                    className="w-4 h-4 object-contain brightness-110"
+                    className="w-3 md:w-4 border-none h-3 md:h-4 object-contain brightness-110"
                     referrerPolicy="no-referrer"
                   />
-                  <span className="font-sans text-[10px] sm:text-[10.5px] text-neutral-200 font-bold tracking-wider uppercase">
+                  <span className="font-sans text-[9px] md:text-[10.5px] text-neutral-200 font-bold tracking-wider uppercase">
                     Лучший фитнес-клуб по версии{" "}
                     <span className="text-[#cdd8e6] font-black">2ГИС</span>
                   </span>
@@ -3270,13 +3289,13 @@ export default function App() {
                     delay: 0.3,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="text-left mb-5"
+                  className="text-left mb-3 md:mb-5"
                   id="main-headline-container"
                 >
-                  <h1 className="text-3xl sm:text-4xl md:text-[2.6rem] lg:text-[3.15rem] font-black tracking-tight leading-[1.1] text-white font-display uppercase">
+                  <h1 className="text-2xl sm:text-4xl md:text-[2.6rem] lg:text-[3.15rem] font-black tracking-tight leading-[1.1] text-white font-display uppercase">
                     <span className="text-[#e40011]">FitnessBlitz</span>
-                    <span className="block text-white mt-2">Ваш путь</span>
-                    <span className="block text-white mt-1">к успеху!</span>
+                    <span className="block text-white mt-1 md:mt-2">Ваш путь</span>
+                    <span className="block text-white mt-0.5 md:mt-1">к успеху!</span>
                   </h1>
                 </motion.div>
 
@@ -3289,23 +3308,23 @@ export default function App() {
                       : { opacity: 0, y: 10 }
                   }
                   transition={{ duration: 0.8, delay: 0.4 }}
-                  className="text-white/70 text-xs sm:text-xs tracking-wider leading-relaxed max-w-[480px] mb-10 font-normal flex flex-col gap-2.5"
+                  className="text-white/70 text-[9.5px] md:text-xs tracking-wider leading-normal md:leading-relaxed max-w-[480px] mb-4 md:mb-10 font-normal flex flex-col gap-1 md:gap-2.5"
                   id="hero-desc-copy"
                 >
-                  <span className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
+                  <span className="flex items-start gap-1.5 md:gap-3">
+                    <Check className="w-3 h-3 md:w-4 md:h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
                     <span>Более 100 000 активных клиентов выбрали нас</span>
                   </span>
-                  <span className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
+                  <span className="flex items-start gap-1.5 md:gap-3">
+                    <Check className="w-3 h-3 md:w-4 md:h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
                     <span>16 премиальных клубов с современным оборудованием</span>
                   </span>
-                  <span className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
+                  <span className="flex items-start gap-1.5 md:gap-3">
+                    <Check className="w-3 h-3 md:w-4 md:h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
                     <span>Доступ в 10 крупнейших городах Казахстана</span>
                   </span>
-                  <span className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
+                  <span className="flex items-start gap-1.5 md:gap-3">
+                    <Check className="w-3 h-3 md:w-4 md:h-4 text-[#ff1a2b] shrink-0 mt-0.5" />
                     <span>
                       Уже 16 лет делаем профессиональный фитнес доступным
                     </span>
@@ -3321,24 +3340,24 @@ export default function App() {
                       : { opacity: 0, y: 15 }
                   }
                   transition={{ duration: 0.8, delay: 0.5 }}
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                  className="flex items-center gap-2 md:gap-4"
                   id="action-buttons-area"
                 >
-                  <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex flex-row items-center gap-2.5 md:gap-4 w-full">
                     <button
                       onClick={() => setIsBuyModalOpen(true)}
-                      className="bg-[#e40011] hover:bg-[#b5000d] text-white text-[10.5px] font-black uppercase tracking-widest px-8.5 py-4.5 rounded-full flex items-center gap-2.5 transition-colors duration-200 cursor-pointer"
+                      className="flex-1 md:flex-none justify-center bg-[#e40011] hover:bg-[#b5000d] text-white text-[9px] md:text-[10.5px] font-black uppercase tracking-widest px-4 py-3 md:px-8.5 md:py-4.5 rounded-full flex items-center gap-2 transition-colors duration-200 cursor-pointer text-center"
                       id="action-btn-primary"
                     >
-                      <span>КУПИТЬ АБОНЕМЕНТ</span>
+                      <span className="whitespace-nowrap">КУПИТЬ АБОНЕМЕНТ</span>
                     </button>
 
                     <button
                       onClick={() => scrollToSectionStr("map-section", 1)}
-                      className="bg-transparent border border-white/10 hover:border-white hover:bg-white/5 text-white text-[10.5px] font-black uppercase tracking-widest px-8.5 py-4.5 rounded-full transition-colors duration-200 cursor-pointer"
+                      className="flex-1 md:flex-none justify-center bg-transparent border border-white/10 hover:border-white hover:bg-white/5 text-white text-[9px] md:text-[10.5px] font-black uppercase tracking-widest px-4 py-3 md:px-8.5 md:py-4.5 rounded-full transition-colors duration-200 cursor-pointer text-center"
                       id="action-btn-secondary"
                     >
-                      <span>ВЫБРАТЬ ЗАЛ</span>
+                      <span className="whitespace-nowrap">ВЫБРАТЬ ЗАЛ</span>
                     </button>
                   </div>
                 </motion.div>
@@ -3347,30 +3366,30 @@ export default function App() {
 
             {/* MIDDLE CHARACTER OVERLAY */}
             <div
-              className="absolute inset-x-0 bottom-0 top-0 z-30 pointer-events-none flex items-end overflow-hidden"
+              className="absolute inset-x-0 bottom-0 top-0 z-10 md:z-30 pointer-events-none flex items-end overflow-hidden"
               id="hero-character-container"
             >
               {/* Animated Man Character */}
               <motion.div
-                className="absolute bottom-0 h-[68vh] sm:h-[75vh] md:h-[82vh] lg:h-[88vh] flex items-end justify-center"
+                className="absolute bottom-0 h-[46vh] sm:h-[75vh] md:h-[94vh] lg:h-[101vh] flex items-end justify-center"
                 initial={{
                   opacity: 0,
                   y: 70,
                   scale: 0.96,
-                  left: isVideoSectionHovered ? "45%" : "82%",
-                  x: isVideoSectionHovered
+                  left: isMobile ? "40%" : (isVideoSectionHovered ? "42%" : "78%"),
+                  x: isMobile ? "-50%" : (isVideoSectionHovered
                     ? "calc(-50% - 300px)"
-                    : "calc(-50% - 240px)",
+                    : "calc(-50% - 240px)"),
                 }}
                 animate={
                   playHeroAnimation
                     ? {
                         opacity: 1,
-                        left: isVideoSectionHovered ? "45%" : "82%",
-                        x: isVideoSectionHovered
+                        left: isMobile ? "40%" : (isVideoSectionHovered ? "42%" : "78%"),
+                        x: isMobile ? "-50%" : (isVideoSectionHovered
                           ? "calc(-50% - 300px)"
-                          : "calc(-50% - 240px)",
-                        scale: isVideoSectionHovered ? 1.05 : 1,
+                          : "calc(-50% - 240px)"),
+                        scale: isMobile ? 1 : (isVideoSectionHovered ? 1.05 : 1),
                         y: 0,
                       }
                     : {
@@ -3432,7 +3451,7 @@ export default function App() {
                 delay: 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="absolute right-0 top-0 bottom-0 flex items-center gap-4 overflow-hidden pointer-events-auto px-4 w-full md:w-[60%] lg:w-[56%] z-0"
+              className="hidden md:flex absolute right-0 top-0 bottom-0 flex items-center gap-4 overflow-hidden pointer-events-auto px-4 w-full md:w-[60%] lg:w-[56%] z-0 opacity-20 md:opacity-100"
               id="right-looping-canvas"
             >
               {/* COLUMN 1: Floats UP */}
@@ -3923,7 +3942,7 @@ export default function App() {
 
             <div className="max-w-7xl mx-auto w-full flex flex-col justify-between z-10 relative">
               {/* Split Screen Flex Layout and interactive glass workspace */}
-              <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 min-h-screen w-full lg:items-center items-stretch overflow-visible pt-4 sm:pt-8 animate-fadeIn">
+              <div className="flex flex-col-reverse lg:flex-row gap-6 sm:gap-8 min-h-screen w-full lg:items-center items-stretch overflow-visible pt-4 sm:pt-8 animate-fadeIn">
                 {/* Foreground Glassmorphic Workspace Control Panel */}
                 <motion.div
                   className={`bg-[#0c0c0f] border border-white/5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between z-20 overflow-hidden transition-[width,min-width,max-width,height,flex] duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${selectedCityId ? "h-fit w-full lg:w-[70%]" : "h-fit w-full lg:w-[32%]"}`}
@@ -3959,7 +3978,7 @@ export default function App() {
                           <div className="flex items-center justify-between pb-4 mb-2 border-b border-white/5 pt-1 select-none shrink-0">
                             <button
                               onClick={() => handleSelectCity(null)}
-                              className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black"
+                              className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black whitespace-nowrap"
                             >
                               <ChevronLeft className="w-3.5 h-3.5 text-[#e40011]" />{" "}
                               <span>Все города</span>
@@ -4133,7 +4152,7 @@ export default function App() {
                               <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/5 pt-1 select-none shrink-0">
                                 <button
                                   onClick={() => handleSelectCity(null)}
-                                  className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black"
+                                  className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black whitespace-nowrap"
                                 >
                                   <ChevronLeft className="w-3.5 h-3.5 text-[#e40011]" />{" "}
                                   <span>Все города</span>
@@ -4278,7 +4297,7 @@ export default function App() {
                               {branches.length > 1 ? (
                                 <button
                                   onClick={() => setSelectedGymId(null)}
-                                  className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black"
+                                  className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black whitespace-nowrap"
                                 >
                                   <ChevronLeft className="w-3.5 h-3.5 text-[#e40011]" />{" "}
                                   <span>К залам ({selectedCity.name})</span>
@@ -4286,7 +4305,7 @@ export default function App() {
                               ) : (
                                 <button
                                   onClick={() => handleSelectCity(null)}
-                                  className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black"
+                                  className="flex items-center gap-2 text-white/60 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/10 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[9.5px] uppercase font-sans tracking-widest cursor-pointer font-black whitespace-nowrap"
                                 >
                                   <ChevronLeft className="w-3.5 h-3.5 text-[#e40011]" />{" "}
                                   <span>Все города</span>
@@ -4315,7 +4334,7 @@ export default function App() {
                                   <span className="font-extrabold text-white">
                                     {selectedCity.name}
                                   </span>
-                                  <span className="text-white/40 normal-case font-normal font-sans select-all truncate text-[10px] sm:text-[11px]">
+                                  <span className="hidden sm:inline text-white/40 normal-case font-normal font-sans select-all truncate text-[10px] sm:text-[11px]">
                                     , {activeBranch.address}
                                   </span>
                                 </span>
@@ -5823,7 +5842,6 @@ export default function App() {
                                 : "bg-neutral-800 text-white/35 border border-white/5 cursor-not-allowed"
                             }`}
                           >
-                            <Send className="w-4 h-4" />
                             <span>Отправить заявку</span>
                           </button>
                         </form>
@@ -6246,6 +6264,82 @@ export default function App() {
                   className="w-full text-center text-[11px] font-sans tracking-wider uppercase text-white/40 hover:text-[#e40011] transition-colors py-2 active:scale-98 cursor-pointer font-bold"
                 >
                   Пропустить и показать все филиалы
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Warning Modal for Mobile Users */}
+      <AnimatePresence>
+        {showMobileWarning && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/95 backdrop-blur-3xl overflow-y-auto"
+            id="mobile-warning-modal-overlay"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 15, opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-sm bg-[#0a0a0c]/98 border border-white/10 rounded-[28px] p-6 sm:p-8 text-center shadow-[0_30px_90px_rgba(228,0,17,0.18)]"
+              id="mobile-warning-modal-container"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Highlight red icon container */}
+              <div 
+                className="bg-red-500/10 border border-[#e40011]/30 p-3.5 rounded-2xl w-fit mx-auto mb-4"
+                id="warning-icon-badge"
+              >
+                <Smartphone className="w-6 h-6 text-[#e40011]" />
+              </div>
+
+              {/* Title */}
+              <h3 
+                className="text-lg font-black uppercase tracking-tight text-white mb-2 font-display"
+                id="warning-modal-heading"
+              >
+                Внимание
+              </h3>
+
+              {/* Text */}
+              <p 
+                className="text-white/80 text-[12.5px] leading-relaxed mb-6 font-medium font-sans"
+                id="warning-modal-text"
+              >
+                Мобильная адаптация этого сайта проработана не до конца.
+              </p>
+
+              {/* Action Buttons */}
+              <div 
+                className="flex flex-col gap-2.5 w-full"
+                id="warning-modal-buttons"
+              >
+                <a
+                  href="https://youtu.be/GjrNhOrjtg4?si=dvLFqRJ3lDAfsrH4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-[#e40011] hover:bg-[#b5000d] text-white text-[10px] font-black uppercase tracking-widest py-3.5 px-6 rounded-full flex items-center justify-center gap-2 transition-colors cursor-pointer text-center"
+                  id="warning-video-btn"
+                >
+                  <span>Просмотр видео на ПК</span>
+                  <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                </a>
+
+                <button
+                  onClick={() => {
+                    setShowMobileWarning(false);
+                    sessionStorage.setItem("mobile_warning_dismissed", "true");
+                  }}
+                  className="w-full bg-white/[0.03] hover:bg-white/[0.08] text-white/70 hover:text-white text-[10px] uppercase font-black tracking-widest py-3 px-6 rounded-full transition-colors border border-white/5 hover:border-white/15 cursor-pointer text-center"
+                  id="warning-dismiss-btn"
+                >
+                  Ясно
                 </button>
               </div>
             </motion.div>
